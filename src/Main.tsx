@@ -6,7 +6,7 @@ const Stack = createNativeStackNavigator<RootStackParamsList>();
 
 export function Main() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name={"Posts"} component={Posts} />
     </Stack.Navigator>
   );
