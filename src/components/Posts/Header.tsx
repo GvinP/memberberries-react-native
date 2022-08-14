@@ -1,17 +1,23 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
 import { MARGIN, PADDING, WIDTH } from "../../constants/constants";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useAppNavigation } from "../../screens/types";
+import { Dispatch, SetStateAction } from "react";
 
-export function Header() {
+type HeaderPropsType = {
+  setShowSearch: Dispatch<SetStateAction<boolean>>;
+};
+
+export function Header({ setShowSearch }: HeaderPropsType) {
+  const navigation = useAppNavigation();
   return (
     <View style={styles.container}>
       <Image
         source={require("../../../assets/berry.png")}
-        style={{ width: 40, height: 40 }}
+        style={{ width: 30, height: 30, borderColor: "tomato", borderWidth: 1 }}
       />
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setShowSearch(true)}>
         <Ionicons name="search-outline" size={34} />
       </TouchableOpacity>
       <TouchableOpacity>
@@ -19,7 +25,7 @@ export function Header() {
       </TouchableOpacity>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Text style={{ fontSize: 16, marginRight: MARGIN }}>Login</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Ionicons name="log-in-outline" size={34} />
         </TouchableOpacity>
       </View>
@@ -35,6 +41,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: MARGIN * 2,
     paddingHorizontal: PADDING,
+    borderColor: "tomato",
+    borderWidth: 1,
   },
   separator: {
     height: MARGIN,
