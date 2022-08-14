@@ -32,7 +32,7 @@ export function Post({item}:PostPropsType) {
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity>
-          {item.likes.includes(item._id) ? (
+          {item.likes.includes(item._id!) ? (
             <AntDesign name="like1" size={24} />
           ) : (
             <AntDesign name="like2" size={24} />

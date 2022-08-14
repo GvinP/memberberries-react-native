@@ -1,12 +1,16 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { PostItem } from "../api/api";
 
 export type RootStackParamsList = {
-  Posts: undefined;
+  Posts: {
+    postData: PostItem
+  };
   Login: undefined;
+  Form: undefined;
 };
 
-// export type CurrentPostProps = NativeStackScreenProps<RootStackParamsList, "CurrentPost">;
+export type PostsProps = NativeStackScreenProps<RootStackParamsList, "Posts">;
 
 export type NavigationUseType = NavigationProp<RootStackParamsList>;
 

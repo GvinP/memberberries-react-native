@@ -20,7 +20,7 @@ export function Header({ setShowSearch }: HeaderPropsType) {
       <TouchableOpacity onPress={() => setShowSearch(true)}>
         <Ionicons name="search-outline" size={34} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity  onPress={() => navigation.navigate("Form")}>
         <AntDesign name="pluscircleo" size={28} />
       </TouchableOpacity>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -39,14 +39,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: MARGIN * 2,
+    paddingVertical: MARGIN,
     paddingHorizontal: PADDING,
     borderColor: "tomato",
     borderWidth: 1,
-  },
-  separator: {
-    height: MARGIN,
-    backgroundColor: "#cecece",
-    marginVertical: MARGIN,
+    backgroundColor: "#ffffff",
   },
 });

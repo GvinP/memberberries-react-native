@@ -11,6 +11,8 @@ const initialState = {
   confirmPassword: "",
 };
 
+export type FormDataType = typeof initialState
+
 export function Login() {
   const [formData, setFormData] = useState(initialState);
   const [isSignUp, setIsSignUp] = useState(false);

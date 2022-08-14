@@ -1,18 +1,36 @@
 import { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, ListRenderItem } from "react-native";
-import { PostItem } from "../../api/api";
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  ListRenderItem,
+  ActivityIndicator,
+} from "react-native";
+import { api, PostItem } from "../../api/api";
 import { HEIGHT, MARGIN, PADDING, WIDTH } from "../../constants/constants";
-import { posts4 } from "../../constants/posts";
 import { Post } from "../../components/Posts/Post";
 import { Header } from "../../components/Posts/Header";
 import SafeAreaView from "react-native-safe-area-view";
 import { Search } from "../../components/Posts/Search";
+import { PostsProps } from "../types";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { getAllPosts } from "../../../store/postsReducer";
 
-export function Posts() {
-  const [posts, setPosts] = useState<any>(posts4.data);
+const START_PAGE = 1;
+const POSTS_LIMIT = 4;
+
+export function Posts({ route }: PostsProps) {
+  // const [posts, setPosts] = useState<PostItem[]>([]);
   const [showSearch, setShowSearch] = useState(false);
+  // const [isRefresing, setIsRefresing] = useState(false);
+  const posts = useAppSelector((state) => state.posts.allPosts);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    //   api.getAllPosts(1).then(res=>setPosts(res.data))
+    dispatch(getAllPosts(START_PAGE));
+
+    // if(route.params?.postData)
+    // setPosts([...posts, route.params.postData])
   }, []);
 
   const render: ListRenderItem<PostItem> = ({ item }) => <Post item={item} />;
@@ -23,15 +41,29 @@ export function Posts() {
     ) : (
       <Header setShowSearch={setShowSearch} />
     );
-
+  const onEndReached = () => {
+    dispatch(getAllPosts(START_PAGE + posts.length / POSTS_LIMIT));
+  };
+  // const onRefresh = () => {
+  //   setIsRefresing(true);
+  //   dispatch(getAllPosts(START_PAGE));
+  //   setIsRefresing(false);
+  // };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={posts}
         renderItem={render}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id!}
         ListHeaderComponent={renderHeader}
+        stickyHeaderIndices={[0]}
         ItemSeparatorComponent={renderSeparator}
+        ListEmptyComponent={<ActivityIndicator size={"large"} />}
+        onEndReachedThreshold={0.5}
+        onEndReached={onEndReached}
+        
+        // refreshing={isRefresing}
+        // onRefresh={onRefresh}
       />
     </SafeAreaView>
   );
