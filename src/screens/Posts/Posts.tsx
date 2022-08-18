@@ -21,16 +21,11 @@ const START_PAGE = 1;
 const POSTS_LIMIT = 4;
 
 export function Posts({ route }: PostsProps) {
-  // const [posts, setPosts] = useState<PostItem[]>([]);
   const [showSearch, setShowSearch] = useState(false);
-  // const [isRefresing, setIsRefresing] = useState(false);
   const posts = useAppSelector((state) => state.posts.allPosts);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllPosts(START_PAGE));
-
-    // if(route.params?.postData)
-    // setPosts([...posts, route.params.postData])
   }, []);
 
   const render: ListRenderItem<PostItem> = ({ item }) => <Post item={item} />;
@@ -44,11 +39,7 @@ export function Posts({ route }: PostsProps) {
   const onEndReached = () => {
     dispatch(getAllPosts(START_PAGE + posts.length / POSTS_LIMIT));
   };
-  // const onRefresh = () => {
-  //   setIsRefresing(true);
-  //   dispatch(getAllPosts(START_PAGE));
-  //   setIsRefresing(false);
-  // };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -61,9 +52,6 @@ export function Posts({ route }: PostsProps) {
         ListEmptyComponent={<ActivityIndicator size={"large"} />}
         onEndReachedThreshold={0.5}
         onEndReached={onEndReached}
-        
-        // refreshing={isRefresing}
-        // onRefresh={onRefresh}
       />
     </SafeAreaView>
   );
@@ -74,6 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#ffffff",
   },
   separator: {
     height: MARGIN,

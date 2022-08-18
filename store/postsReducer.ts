@@ -11,23 +11,20 @@ export const getAllPosts = createAsyncThunk<PostItem[] | undefined, number>('pos
     }
 })
 
-// export const getCurrentPokemon = createAsyncThunk<Pokemon | undefined, string>('root/getCurrentPokemon', async (url: string) => {
-//     try {
-//         const res = await api.getCurrentPokemon(url)
-//         return res.data
-//     } catch (error) {
+export const addPost = createAsyncThunk<PostItem[] | undefined, number>('posts/addPost', async (page: number, apiThunk) => {
+    try {
+        const res = await api.getAllPosts(page)
+        return res.data
+    } catch (error) {
         
-//     }
-// })
+    }
+})
 
-// export const clearCurrentPokemon = createAction('root/clearCurrentPokemon')
 
 const postsSlice = createSlice({
     name: 'postsReducer',
     initialState: {
         allPosts: [] as PostItem[]
-        // allPokemons: [] as PokemonItem[],
-        // currentPokemon: {} as Pokemon
     },
     reducers: {},
     extraReducers:(builder) => {
@@ -35,12 +32,6 @@ const postsSlice = createSlice({
         .addCase(getAllPosts.fulfilled, (state, action)=>{
             state.allPosts = state.allPosts.concat(action.payload? action.payload : [])
         })
-        // .addCase(getCurrentPokemon.fulfilled, (state, action)=>{
-        //     state.currentPokemon = action.payload? action.payload : {} as Pokemon
-        // })
-        // .addCase(clearCurrentPokemon, (state, action)=>{
-        //     state.currentPokemon = {} as Pokemon
-        // })
     },
 })
 

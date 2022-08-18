@@ -2,6 +2,9 @@ import { useState } from "react";
 import { View, Text, Pressable, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Input } from "../../components/Login/Input";
 import { WIDTH, MARGIN, PADDING } from "../../constants/constants";
+import { login, registration } from "../../../store/authReducer";
+import { useAppNavigation } from "../types";
+import { useAppDispatch } from "../../../store/store";
 
 const initialState = {
   firstName: "",
@@ -14,21 +17,33 @@ const initialState = {
 export type FormDataType = typeof initialState
 
 export function Login() {
+  const navigation = useAppNavigation()
+  const dispatch = useAppDispatch()
   const [formData, setFormData] = useState(initialState);
   const [isSignUp, setIsSignUp] = useState(false);
+
+  const handleSubmit = async () => {
+    if (isSignUp) {
+      await dispatch(registration(formData))
+    } else {
+      await dispatch(login(formData))
+    }
+    navigation.navigate("Posts")
+}
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
       {isSignUp && (
         <View>
-          <Input label="First Name" name="firstName" />
-          <Input label="Last Name" name="lastName" />
+          <Input label="First Name" name="firstName" handleChange={setFormData}/>
+          <Input label="Last Name" name="lastName" handleChange={setFormData}/>
         </View>
       )}
-      <Input label="Email Adress" name="emailAdress" />
-      <Input label="Password" name="password" />
-      {isSignUp && <Input label="Confirm Password" name="confirmPassword" />}
-      <Pressable onPress={() => {}} style={styles.signInButton}>
+      <Input label="Email Adress" name="email" handleChange={setFormData}/>
+      <Input label="Password" name="password" handleChange={setFormData}/>
+      {isSignUp && <Input label="Confirm Password" name="confirmPassword" handleChange={setFormData}/>}
+      <Pressable onPress={handleSubmit} style={styles.signInButton}>
         <Text>{isSignUp ? "Sign Up" : "Sign In"}</Text>
       </Pressable>
       <Pressable

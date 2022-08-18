@@ -9,15 +9,15 @@ import {
 } from "react-native";
 import { WIDTH, MARGIN, PADDING } from "../../constants/constants";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { FormDataType } from "../../screens/Login/Login";
 
 type InputPropsType = {
-  name?: string;
-  label?: string;
+  name: string;
+  label: string;
   type?: string;
   autoFocus?: boolean;
-  handleChange?: (text: string) => void;
-  handlerShowPassword?: () => void;
+  handleChange: Dispatch<SetStateAction<FormDataType>>;
 };
 
 export function Input({ name, label, handleChange }: InputPropsType) {
@@ -26,42 +26,45 @@ export function Input({ name, label, handleChange }: InputPropsType) {
     <View style={styles.inputContainer}>
       <TextInput
         placeholder={label}
-        onChangeText={handleChange}
-        secureTextEntry={showPassword}
+        onChangeText={(text) =>
+          handleChange((prevState) => ({ ...prevState, [name]: text }))
+        }
+        secureTextEntry={
+          name === "password" || name === "confirmPassword"
+            ? showPassword
+            : false
+        }
         autoCorrect={false}
         style={styles.input}
       />
-      {(name === "password" || name === 'confirmPassword') &&
-        (
-            <TouchableOpacity onPress={()=>setShowPassword(prevState=>!prevState)} style={styles.icon}>
-                <MaterialIcons name={showPassword?"visibility":"visibility-off"} size={20}/>
-            </TouchableOpacity>
-        )}
+      {(name === "password" || name === "confirmPassword") && (
+        <TouchableOpacity
+          onPress={() => setShowPassword((prevState) => !prevState)}
+          style={styles.icon}
+        >
+          <MaterialIcons
+            name={showPassword ? "visibility" : "visibility-off"}
+            size={20}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: "#cecece",
     width: WIDTH - PADDING * 2,
-    paddingHorizontal: PADDING/2,
+    paddingHorizontal: PADDING / 2,
     height: PADDING,
     marginVertical: MARGIN,
-    borderColor: 'tomato',
-    borderWidth: 1
   },
   input: {
     width: WIDTH - PADDING * 4,
-    borderColor: 'tomato',
-    borderWidth: 1
   },
-  icon: {
-    // width: WIDTH / 2 - MARGIN * 4,
-    borderColor: 'tomato',
-    borderWidth: 1
-  },
+  icon: {},
 });

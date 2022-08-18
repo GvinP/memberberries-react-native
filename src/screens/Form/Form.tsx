@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import { WIDTH, MARGIN, PADDING } from "../../constants/constants";
 import * as ImagePicker from "expo-image-picker";
@@ -75,8 +74,7 @@ const onSubmit = async () => {
         <TouchableOpacity style={styles.button} onPress={pickImage}>
           <Text>Choose file</Text>
           {isLoading&&<Feather name="check-circle" size={20} style={{position: 'absolute', left: WIDTH-PADDING*2-MARGIN*3}}/>}
-        </TouchableOpacity>
-        
+        </TouchableOpacity>        
         <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Text>Submit</Text>
         </TouchableOpacity>
@@ -103,8 +101,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: PADDING / 2,
     height: PADDING,
     marginVertical: MARGIN,
-    borderColor: "tomato",
-    borderWidth: 1,
   },
   button: {
     flexDirection: 'row',

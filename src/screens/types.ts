@@ -5,7 +5,7 @@ import { PostItem } from "../api/api";
 export type RootStackParamsList = {
   Posts: {
     postData: PostItem
-  };
+  } | undefined;
   Login: undefined;
   Form: undefined;
 };

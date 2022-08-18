@@ -1,6 +1,8 @@
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authApi, PostItem } from "../src/api/api";
 import { FormDataType } from "../src/screens/Login/Login";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export type UserType = {
     _id: string;
@@ -11,16 +13,17 @@ export type UserType = {
 }
 
 export type AuthDataType = {
-    UserData: UserType
+    result: UserType
     token: string
 }
 
 export const login = createAsyncThunk<AuthDataType, FormDataType>('auth/login', async (formData: FormDataType, apiThunk) => {
     try {
         const res = await authApi.login(formData)
+        await AsyncStorage.setItem('userData', JSON.stringify(res.data))
         return res.data
     } catch (error) {
-        
+        alert(JSON.stringify(error))
     }
 })
 
@@ -33,28 +36,21 @@ export const registration = createAsyncThunk<AuthDataType, FormDataType>('auth/r
     }
 })
 
-// export const clearCurrentPokemon = createAction('root/clearCurrentPokemon')
-
 const authSlice = createSlice({
     name: 'autnReducer',
     initialState: {
         UserData: {} as UserType,
         token: ''
-        // allPokemons: [] as PokemonItem[],
-        // currentPokemon: {} as Pokemon
     },
     reducers: {},
     extraReducers:(builder) => {
         builder
         .addCase(login.fulfilled, (state, action)=>{
-            state.UserData = action.payload.UserData
+            state.UserData = action.payload.result
         })
         .addCase(registration.fulfilled, (state, action)=>{
-            state.UserData = action.payload.UserData
+            state.UserData = action.payload.result
         })
-        // .addCase(clearCurrentPokemon, (state, action)=>{
-        //     state.currentPokemon = {} as Pokemon
-        // })
     },
 })
 
