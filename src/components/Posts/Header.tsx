@@ -17,6 +17,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 import { AuthDataType } from "../../../store/authReducer";
 import { ModalAddPost } from "./ModalAddPost";
+import decode from "jwt-decode";
+
+type DecodedTokenType = {
+  email: string;
+  exp: number;
+  iat: number;
+  id: string;
+};
 
 type HeaderPropsType = {
   setShowSearch: Dispatch<SetStateAction<boolean>>;
@@ -38,6 +46,11 @@ export function Header({ setShowSearch }: HeaderPropsType) {
       }
     };
     getData();
+    const token = user?.token;
+    if (token) {
+      const decodedToken = decode<DecodedTokenType>(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
   }, [user]);
 
   const logout = async () => {
@@ -100,7 +113,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: MARGIN,
+    paddingTop: MARGIN * 2,
+    paddingBottom: MARGIN,
     paddingHorizontal: PADDING,
     backgroundColor: "#ffffff",
   },

@@ -7,10 +7,14 @@ export type RootStackParamsList = {
     postData: PostItem
   } | undefined;
   Login: undefined;
-  Form: undefined;
+  Form: {
+    postData: PostItem
+  } | undefined;
 };
 
 export type PostsProps = NativeStackScreenProps<RootStackParamsList, "Posts">;
+
+export type FormProps = NativeStackScreenProps<RootStackParamsList, "Form">;
 
 export type NavigationUseType = NavigationProp<RootStackParamsList>;
 
